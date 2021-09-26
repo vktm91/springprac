@@ -16,16 +16,22 @@ public class StoryController {
     private final StoryService storyService;
 
 
-    @PostMapping("/api/storys")
-    public Story createStory(@RequestBody StoryRequestDto requestDto) {
-        Story story = new Story(requestDto);
-        return storyRepository.save(story);
-    }
+//    @PostMapping("/api/storys")
+//    public Story createStory(@RequestBody StoryRequestDto requestDto) {
+//        Story story = new Story(requestDto);
+//        return storyRepository.save(story);
+//    }
 
     @GetMapping("/api/storys")
-    public List<Story> readStorys() {
-        return  storyRepository.findAllByOrderByModifiedAtDesc();
+    public List<Story> readStory() {
+        return storyRepository.findAllByOrderByModifiedAtDesc();
     }
+
+//    @GetMapping("/valueStory/{id}")
+//    public List<Story> valueStory(@PathVariable Long id){
+//        storyRepository.findById(id);
+//        return value;
+//    }
 
     @DeleteMapping("/api/storys/{id}")
     public Long deleteStory(@PathVariable Long id) {

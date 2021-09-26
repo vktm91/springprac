@@ -6,4 +6,5 @@ import lombok.Getter;
 public class StoryRequestDto {
     private String username;
     private String contents;
+    private String title;
 }

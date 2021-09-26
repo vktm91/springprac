@@ -6,10 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Timeline Service</title>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
 
@@ -17,7 +13,7 @@
         @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
 
         body {
-            margin: 0;
+            margin: 0px;
         }
 
         .area-edit {
@@ -50,7 +46,7 @@
         .background-header {
             position: fixed;
             z-index: -1;
-            top: 0;
+            top: 0px;
             width: 100%;
             height: 180px;
             background-color: #8f829a;
@@ -210,6 +206,19 @@
         }
     </style>
     <script>
+        // 미리 작성된 영역 - 수정하지 않으셔도 됩니다.
+        // 사용자가 내용을 올바르게 입력하였는지 확인합니다.
+        function isValidContents(contents) {
+            if (contents == '') {
+                alert('내용을 입력해주세요');
+                return false;
+            }
+            if (contents.trim().length > 140) {
+                alert('공백 포함 140자 이하로 입력해주세요');
+                return false;
+            }
+            return true;
+        }
 
         // 익명의 username을 만듭니다.
         function genRandomName(length) {
@@ -257,47 +266,31 @@
             getMessages();
         })
 
-        // 메모를 불러와서 보여줍니다.
-        function getMessages() {
-            // 1. 기존 메모 내용을 지웁니다.
-            // 2. 메모 목록을 불러와서 HTML로 붙입니다.
+        // 메모를 생성합니다.
+        function writePost() {
+            // 1. 작성한 메모를 불러옵니다.
+            let contents = $('#contents').val();
+            // 2. 작성한 메모가 올바른지 isValidContents 함수를 통해 확인합니다.
+            if (isValidContents(contents) == false) {
+                return;
+            }
+            // 3. genRandomName 함수를 통해 익명의 username을 만듭니다.
+            let username = genRandomName(10);
+            // 4. 전달할 data JSON으로 만듭니다.
+            let data = {'username': username, 'contents': contents};
+            // 5. POST /api/memos 에 data를 전달합니다.
             $.ajax({
-                type: 'GET',
-                url: '/api/storys',
+                type: "POST",
+                url: "/api/storys",
+                contentType: "application/json", // JSON 형식으로 전달함을 알리기
+                data: JSON.stringify(data),   // .stringify: api는 원래 문자열로만 정보를 주고받을수있다. JSON을 string으로 변환해주는것.
                 success: function (response) {
-                    for (let i = 0; i < response.length; i++) {
-                        let story = response[i];
-                        let id = story.id;
-                        let username = story.username;
-                        let contents = story.contents;
-                        let modifiedAt = story.modifiedAt;
-                        let title = story.title;
-                        addHTML(id, username, contents, modifiedAt, title)
-                    }
+                    alert('메시지가 성공적으로 작성되었습니다.');
+                    window.location.reload();
                 }
-            })
-
+            });
         }
 
-        // 메모 하나를 HTML로 만들어서 body 태그 내 원하는 곳에 붙입니다.
-        function addHTML(id, username, contents, modifiedAt, title) {
-
-            let tempHtml = `<tr>
-                            <th scope="row">${id}1</th>
-                            <td><div id="${id}-username" class="username">
-                                 ${username}</div>
-                            </td>
-                            <td onclick="window.location.href='/api/storys/details'"><div id="${id}-contents" class="text">
-                                 ${title}</div>
-                            </td>
-                            <td><div class="date">
-                                 ${modifiedAt}</div>
-                            </td>
-                            </tr>`
-
-            // 2. #cards-box 에 HTML을 붙인다.
-            $('#story-table').append(tempHtml);
-        }
 
     </script>
 </head>
@@ -313,33 +306,18 @@
     <div class="header">
         <h2>StoryBlog</h2>
         <p>
-            재미있는 이야기만 남겨주세요.
+            공유하고 싶은 소식을 입력해주세요.
         </p>
     </div>
-
+    <div class="area-write">
+        <textarea class="field" placeholder="공유하고 싶은 소식을 입력해주세요" name="contents" id="contents" cols="30"
+                  rows="10"></textarea>
+        <!--            <button class="btn btn-danger" onclick="writePost()">작성하기</button>-->
+        <img src="images/send.png" alt="" onclick="writePost()">
+    </div>
     <div id="cards-box" class="area-read">
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col"></th>
-                <th scope="col">작성자</th>
-                <th scope="col">제목</th>
-                <th scope="col">날짜</th>
-            </tr>
-            </thead>
-            <tbody id="story-table">
-            <tr>
-                <th scope="row">1</th>
-                <td>더듬이</td>
-                <td>내동생은 오바쟁이</td>
-                <td>2021-05-15</td>
-            </tr>
-            </tbody>
-        </table>
-
-
         <div class="card">
-            <button type="button" class="btn btn-outline-secondary">나도 글쓰기</button>
+
         </div>
     </div>
 </div>
