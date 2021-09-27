@@ -358,12 +358,12 @@
 </div>
 <div class="wrap">
     <div class="header">
-        <h2>StoryBlog</h2>
+        <h2 onclick="window.location.href='/'">StoryBlog</h2>
         <p>
-            된다 된다!!!!!!
+            글 상세보기
         </p>
     </div>
-    <div class="card" id="cards-detail">
+    <div class="card" id="cards-box">
             <h5 class="card-header" th:text="${data2.getTitle()}"></h5>
             <div class="card-body">
                 <h10 class="card-title" th:text="${data2.getUsername()}"></h10>
@@ -372,11 +372,6 @@
                 <a href="#" class="btn btn-primary">수정하기</a>
                 <a href="#" class="btn btn-primary">삭제하기</a>
             </div>
-    </div>
-    <div id="cards-box" class="area-read">
-        <div class="card">
-
-        </div>
     </div>
 </div>
 </body>

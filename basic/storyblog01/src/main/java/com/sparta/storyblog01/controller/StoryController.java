@@ -7,7 +7,6 @@ import com.sparta.storyblog01.service.StoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -28,7 +27,11 @@ public class StoryController {
         return storyRepository.findAllByOrderByModifiedAtDesc();
     }
 
-
+    @PostMapping("/api/storys/writting")
+    public Story createStory(@RequestBody StoryRequestDto requestDto) {
+        Story story = new Story(requestDto);
+        return storyRepository.save(story);
+    }
 
     @DeleteMapping("/api/storys/{id}")
     public Long deleteStory(@PathVariable Long id) {

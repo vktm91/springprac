@@ -14,12 +14,6 @@ import org.springframework.web.bind.annotation.*;
 public class DetailController {
     private final StoryRepository storyRepository;
 
-    @PostMapping("/api/storys")
-    public Story createStory(@RequestBody StoryRequestDto requestDto) {
-        Story story = new Story(requestDto);
-        return storyRepository.save(story);
-    }
-
     @GetMapping("/api/storys/details/{id}")
     public String detail(Model model, @PathVariable Long id) {
         Story testvalue = storyRepository.findById(id).orElseThrow(
@@ -29,6 +23,16 @@ public class DetailController {
         model.addAttribute("data2", testvalue);
         return "detail";
     }
+
+    @GetMapping("/api/storys/writting")
+    public String writtingStory(Model model) {
+        model.addAttribute("writting", "writting");
+        return "writting";
+    }
+
+
+
+
 
 //    @GetMapping("/valueStory")
 //    public Story valueStory(@PathVariable Long id){
