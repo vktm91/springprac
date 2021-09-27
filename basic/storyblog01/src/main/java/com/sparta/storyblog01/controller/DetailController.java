@@ -20,10 +20,19 @@ public class DetailController {
         return storyRepository.save(story);
     }
 
-    @GetMapping("/api/storys/details")
-    public String detail(Model model) {
+    @GetMapping("/api/storys/details/{id}")
+    public String detail(Model model, @PathVariable Long id) {
+        Story testvalue = storyRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("아이디가 존재하지 않습니다"));
+        System.out.println(testvalue);
         model.addAttribute("data", "NICE");
-        return  "hello";
+        model.addAttribute("data2", testvalue);
+        return "detail";
     }
 
+//    @GetMapping("/valueStory")
+//    public Story valueStory(@PathVariable Long id){
+//        System.out.println(storyRepository.getById(id).getClass());
+//        return storyRepository.getById(id);
+//    }
 }

@@ -267,27 +267,27 @@
 
         $(document).ready(function () {
             // HTML 문서를 로드할 때마다 실행합니다.
-            getMessages();
+            //  getMessages();
         })
 
-        // 메모를 불러와서 보여줍니다.
-        function getMessages() {
-            // 1. 기존 메모 내용을 지웁니다.
-            // 2. 메모 목록을 불러와서 HTML로 붙입니다.
-            $.ajax({
-                type: "GET",
-                url: "/valueStory",
-                success: function (response) {
-                    let story = response
-                    let id = story.id;
-                    let username = story.username;
-                    let contents = story.contents;
-                    let modifiedAt = story.modifiedAt;
-                    let title = story.title;
-                    addHTML(id, username, contents, modifiedAt, title)
-                    }
-            })
-        }
+        // // 메모를 불러와서 보여줍니다.
+        // function getMessages() {
+        //     // 1. 기존 메모 내용을 지웁니다.
+        //     // 2. 메모 목록을 불러와서 HTML로 붙입니다.
+        //     $.ajax({
+        //         type: "GET",
+        //         url: `/valueStory`,
+        //         success: function (response) {
+        //             let story = response
+        //             let id = story.id;
+        //             let username = story.username;
+        //             let contents = story.contents;
+        //             let modifiedAt = story.modifiedAt;
+        //             let title = story.title;
+        //             addHTML(id, username, contents, modifiedAt, title)
+        //             }
+        //     })
+        // }
 
         // 메모 하나를 HTML로 만들어서 body 태그 내 원하는 곳에 붙입니다.
         function addHTML(id, username, contents, modifiedAt, title) {
@@ -324,6 +324,10 @@
                 success: function (response) {
                     alert('메시지 변경에 성공하였습니다.');
                     window.location.reload();
+                },
+                error: function (error) {
+                    alert('에러!');
+                    console.log(error)
                 }
             });
         }
@@ -346,8 +350,6 @@
 
 </head>
 <body>
-<p th:text="'안녕하세요. ' + ${data}" >안녕하세요. 손님</p>
-
 <div class="background-header">
 
 </div>
@@ -358,18 +360,18 @@
     <div class="header">
         <h2>StoryBlog</h2>
         <p>
-            detail page
+            된다 된다!!!!!!
         </p>
     </div>
     <div class="card" id="cards-detail">
-        <h5 class="card-header">제목</h5>
-        <div class="card-body">
-            <h10 class="card-title">username</h10>
-            <p class="card-text">네용</p>
-            <footer class="blockquote-footer">modifiedAt</footer>
-            <a href="#" class="btn btn-primary">수정하기</a>
-            <a href="#" class="btn btn-primary">삭제하기</a>
-        </div>
+            <h5 class="card-header" th:text="${data2.getTitle()}"></h5>
+            <div class="card-body">
+                <h10 class="card-title" th:text="${data2.getUsername()}"></h10>
+                <p class="card-text" th:text="${data2.getContents()}"></p>
+                <footer class="blockquote-footer" th:text="${data2.getModifiedAt()}"></footer>
+                <a href="#" class="btn btn-primary">수정하기</a>
+                <a href="#" class="btn btn-primary">삭제하기</a>
+            </div>
     </div>
     <div id="cards-box" class="area-read">
         <div class="card">

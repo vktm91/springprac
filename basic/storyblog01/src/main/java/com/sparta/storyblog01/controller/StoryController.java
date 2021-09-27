@@ -7,6 +7,7 @@ import com.sparta.storyblog01.service.StoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -27,11 +28,7 @@ public class StoryController {
         return storyRepository.findAllByOrderByModifiedAtDesc();
     }
 
-//    @GetMapping("/valueStory/{id}")
-//    public List<Story> valueStory(@PathVariable Long id){
-//        storyRepository.findById(id);
-//        return value;
-//    }
+
 
     @DeleteMapping("/api/storys/{id}")
     public Long deleteStory(@PathVariable Long id) {
@@ -42,6 +39,7 @@ public class StoryController {
     @PutMapping("/api/storys/{id}")
     public Long updateStory(@PathVariable Long id, @RequestBody StoryRequestDto requestDto) {
         storyService.update(id, requestDto);
+        System.out.println(id +" , "+requestDto);
         return id;
     }
 
