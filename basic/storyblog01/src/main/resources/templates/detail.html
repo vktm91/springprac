@@ -105,6 +105,7 @@
             border: none;
             padding: 18px;
             resize: none;
+            display: none;
         }
 
         textarea.field::placeholder {
@@ -196,6 +197,12 @@
             height: 15px;
         }
 
+        .btn-submit {
+            cursor: pointer;
+            position: absolute;
+            display: none;
+        }
+
         .footer img.icon-delete {
             cursor: pointer;
             position: absolute;
@@ -210,31 +217,18 @@
         }
     </style>
     <script>
-        // 미리 작성된 영역 - 수정하지 않으셔도 됩니다.
+
         // 사용자가 내용을 올바르게 입력하였는지 확인합니다.
         function isValidContents(contents) {
             if (contents == '') {
                 alert('내용을 입력해주세요');
                 return false;
             }
-            if (contents.trim().length > 140) {
-                alert('공백 포함 140자 이하로 입력해주세요');
+            if (contents.trim().length > 1000) {
+                alert('공백 포함 1000자 이하로 입력해주세요');
                 return false;
             }
             return true;
-        }
-
-        // 익명의 username을 만듭니다.
-        function genRandomName(length) {
-            let result = '';
-            let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            let charactersLength = characters.length;
-            for (let i = 0; i < length; i++) {
-                let number = Math.random() * charactersLength;
-                let index = Math.floor(number);
-                result += characters.charAt(index);
-            }
-            return result;
         }
 
         // 수정 버튼을 눌렀을 때, 기존 작성 내용을 textarea 에 전달합니다.
@@ -246,7 +240,7 @@
         }
 
         function showEdits(id) {
-            $(`#${id}-editarea`).show();
+            $(`#${id}-textarea`).show();
             $(`#${id}-submit`).show();
             $(`#${id}-delete`).show();
 
@@ -254,76 +248,43 @@
             $(`#${id}-edit`).hide();
         }
 
+
         function hideEdits(id) {
-            $(`#${id}-editarea`).hide();
+            $(`#${id}-textarea`).hide();
             $(`#${id}-submit`).hide();
             $(`#${id}-delete`).hide();
 
             $(`#${id}-contents`).show();
             $(`#${id}-edit`).show();
         }
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // 여기서부터 코드를 작성해주시면 됩니다.
 
-        $(document).ready(function () {
-            // HTML 문서를 로드할 때마다 실행합니다.
-            //  getMessages();
-        })
 
-        // // 메모를 불러와서 보여줍니다.
-        // function getMessages() {
-        //     // 1. 기존 메모 내용을 지웁니다.
-        //     // 2. 메모 목록을 불러와서 HTML로 붙입니다.
-        //     $.ajax({
-        //         type: "GET",
-        //         url: `/valueStory`,
-        //         success: function (response) {
-        //             let story = response
-        //             let id = story.id;
-        //             let username = story.username;
-        //             let contents = story.contents;
-        //             let modifiedAt = story.modifiedAt;
-        //             let title = story.title;
-        //             addHTML(id, username, contents, modifiedAt, title)
-        //             }
-        //     })
-        // }
-
-        // 메모 하나를 HTML로 만들어서 body 태그 내 원하는 곳에 붙입니다.
-        function addHTML(id, username, contents, modifiedAt, title) {
-            // 1. HTML 태그를 만듭니다.
-            let tempHtml = `<h5 class="card-header">${title}</h5>
-                            <div class="card-body">
-                                <h10 class="card-title">${username}</h10>
-                                <p class="card-text">${contents}</p>
-                                <footer class="blockquote-footer">${modifiedAt}</footer>
-                                <a href="#" class="btn btn-primary">수정하기</a>
-                                <a href="#" class="btn btn-primary">삭제하기</a>
-                            </div>`;
-            // 2. #cards-box 에 HTML을 붙인다.
-            $('#cards-detail').html(data);
-        }
-
-        // 메모를 수정합니다.
+        // 수정된 메모 제출
         function submitEdit(id) {
             // 1. 작성 대상 메모의 username과 contents 를 확인합니다.
             let username = $(`#${id}-username`).text().trim();    //텍스트로 박혀있는 부분과
             let contents = $(`#${id}-textarea`).val().trim();     //입력창 부분
+            let title = $(`#${id}-title2`).text().trim();
             // 2. 작성한 메모가 올바른지 isValidContents 함수를 통해 확인합니다.
+
             if (isValidContents(contents) == false) {
                 return;
             }
             // 3. 전달할 data JSON으로 만듭니다.
-            let data = {'username': username, 'contents': contents};
+            let data = {'username': username, 'contents': contents, 'title': title};
             // 4. PUT /api/memos/{id} 에 data를 전달합니다.
+
             $.ajax({
                 type: "PUT",
                 url: `/api/storys/${id}`,
                 contentType: "application/json",
                 data: JSON.stringify(data),
+
                 success: function (response) {
                     alert('메시지 변경에 성공하였습니다.');
                     window.location.reload();
+
+                    console.log(data);
                 },
                 error: function (error) {
                     alert('에러!');
@@ -334,13 +295,12 @@
 
         // 메모를 삭제합니다.
         function deleteOne(id) {
-            // 1. DELETE /api/memos/{id} 에 요청해서 메모를 삭제합니다.
             $.ajax({
                 type: "DELETE",
                 url: `/api/storys/${id}`,   //삭제할땐 가져갈 정보가 필요없으니까 data등 없음
                 success: function (response) {
                     alert('메시지 삭제에 성공하였습니다.');
-                    window.location.reload();
+                    window.location.href = "/";
                 }
             })
         }
@@ -364,13 +324,19 @@
         </p>
     </div>
     <div class="card" id="cards-box">
-            <h5 class="card-header" th:text="${data2.getTitle()}"></h5>
+                <!-- 제목, 작성자 영역 -->
+            <h5 class="card-header" th:id="${data2.getId()}+'-title2'" th:text="${data2.getTitle()}"></h5>
             <div class="card-body">
-                <h10 class="card-title" th:text="${data2.getUsername()}"></h10>
-                <p class="card-text" th:text="${data2.getContents()}"></p>
+                <h10 th:id="${data2.getId()}+'-username'" class="card-title" th:text="${data2.getUsername()}"></h10>
+                <!-- contents 조회/수정 영역-->
+                <p class="card-text" th:id="${data2.getId()}+'-contents'" th:text="${data2.getContents()}"></p>
+                <textarea maxlength="1000" class="field card-body" name="contents" th:id="${data2.getId()}+'-textarea'" cols="30"
+                          rows="10"></textarea>
+                <!-- 날짜, 버튼 영역-->
+                <a th:id="${data2.getId()}+'-edit'" class="btn btn-primary btn-edit" th:attr="onclick=|editPost(${data2.getId()})|">수정하기</a>
+                <a th:id="${data2.getId()}+'-submit'" class="btn btn-primary btn-submit" th:attr="onclick=|submitEdit(${data2.getId()})|">수정완료</a>
+                <a th:id="${data2.getId()}+'-delete'" class="btn btn-primary btn-delete" th:attr="onclick=|deleteOne(${data2.getId()})|">삭제하기</a>
                 <footer class="blockquote-footer" th:text="${data2.getModifiedAt()}"></footer>
-                <a href="#" class="btn btn-primary">수정하기</a>
-                <a href="#" class="btn btn-primary">삭제하기</a>
             </div>
     </div>
 </div>

@@ -19,6 +19,7 @@ public class StoryService {
         Story story = storyRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("아이디가 존재하지 않습니다"));
         story.update(requestDto);
+        System.out.println(requestDto);
         return id;
     }
 }

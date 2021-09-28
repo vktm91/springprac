@@ -16,12 +16,6 @@ public class StoryController {
     private final StoryService storyService;
 
 
-//    @PostMapping("/api/storys")
-//    public Story createStory(@RequestBody StoryRequestDto requestDto) {
-//        Story story = new Story(requestDto);
-//        return storyRepository.save(story);
-//    }
-
     @GetMapping("/api/storys")
     public List<Story> readStory() {
         return storyRepository.findAllByOrderByModifiedAtDesc();
