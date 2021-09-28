@@ -3,7 +3,6 @@ package com.sparta.storyblog01.controller;
 
 import com.sparta.storyblog01.domain.Story;
 import com.sparta.storyblog01.domain.StoryRepository;
-import com.sparta.storyblog01.domain.StoryRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

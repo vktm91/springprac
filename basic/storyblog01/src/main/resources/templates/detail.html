@@ -20,22 +20,9 @@
             margin: 0;
         }
 
-        .area-edit {
-            display: none;
-        }
-
         .wrap {
             width: 538px;
             margin: 10px auto;
-        }
-
-        #contents {
-            width: 538px;
-        }
-
-        .area-write {
-            position: relative;
-            width: 538px;
         }
 
         .area-write img {
@@ -50,7 +37,7 @@
         .background-header {
             position: fixed;
             z-index: -1;
-            top: 0px;
+            top: 0;
             width: 100%;
             height: 180px;
             background-color: #8f829a;
@@ -129,92 +116,25 @@
             margin-bottom: 12px;
         }
 
-        .card .metadata {
-            position: relative;
-            display: flex;
-            font-family: 'Spoqa Han Sans';
-            font-size: 11px;
-            font-weight: normal;
-            font-stretch: normal;
-            font-style: normal;
-            line-height: 1;
-            letter-spacing: -0.77px;
-            text-align: left;
-            color: #adb5bd;
-            height: 14px;
-            padding: 10px 23px;
-        }
-
-        .card .metadata .date {
-
-        }
-
-        .card .metadata .username {
-            margin-left: 20px;
-        }
-
-        .contents {
-            padding: 0px 23px;
-            word-wrap: break-word;
-            word-break: break-all;
-        }
-
-        .contents div.edit {
-            display: none;
-        }
-
-        .contents textarea.te-edit {
-            border-right: none;
-            border-top: none;
-            border-left: none;
-            resize: none;
-            border-bottom: 1px solid #212529;
-            width: 100%;
-            font-family: 'Spoqa Han Sans';
-        }
-
-        .footer {
-            position: relative;
-            height: 40px;
-        }
-
-        .footer img.icon-start-edit {
-            cursor: pointer;
-            position: absolute;
-            bottom: 14px;
-            right: 55px;
-            width: 18px;
-            height: 18px;
-        }
-
-        .footer img.icon-end-edit {
-            cursor: pointer;
-            position: absolute;
-            display: none;
-            bottom: 14px;
-            right: 55px;
-            width: 20px;
-            height: 15px;
-        }
-
         .btn-submit {
+            float: right;
             cursor: pointer;
             position: absolute;
             display: none;
-        }
 
-        .footer img.icon-delete {
-            cursor: pointer;
-            position: absolute;
-            bottom: 12px;
-            right: 19px;
-            width: 14px;
-            height: 18px;
+            background-color: #8f829a;
         }
 
         #cards-box {
             margin-top: 12px;
         }
+
+        .btn-group {
+            float: right;
+            background-color: #8f829a;
+        }
+
+
     </style>
     <script>
 
@@ -248,17 +168,6 @@
             $(`#${id}-edit`).hide();
         }
 
-
-        function hideEdits(id) {
-            $(`#${id}-textarea`).hide();
-            $(`#${id}-submit`).hide();
-            $(`#${id}-delete`).hide();
-
-            $(`#${id}-contents`).show();
-            $(`#${id}-edit`).show();
-        }
-
-
         // 수정된 메모 제출
         function submitEdit(id) {
             // 1. 작성 대상 메모의 username과 contents 를 확인합니다.
@@ -266,14 +175,12 @@
             let contents = $(`#${id}-textarea`).val().trim();     //입력창 부분
             let title = $(`#${id}-title2`).text().trim();
             // 2. 작성한 메모가 올바른지 isValidContents 함수를 통해 확인합니다.
-
             if (isValidContents(contents) == false) {
                 return;
             }
             // 3. 전달할 data JSON으로 만듭니다.
             let data = {'username': username, 'contents': contents, 'title': title};
             // 4. PUT /api/memos/{id} 에 data를 전달합니다.
-
             $.ajax({
                 type: "PUT",
                 url: `/api/storys/${id}`,
@@ -281,7 +188,7 @@
                 data: JSON.stringify(data),
 
                 success: function (response) {
-                    alert('메시지 변경에 성공하였습니다.');
+                    alert('수정완료!');
                     window.location.reload();
 
                     console.log(data);
@@ -299,7 +206,7 @@
                 type: "DELETE",
                 url: `/api/storys/${id}`,   //삭제할땐 가져갈 정보가 필요없으니까 data등 없음
                 success: function (response) {
-                    alert('메시지 삭제에 성공하였습니다.');
+                    alert('삭제완료!');
                     window.location.href = "/";
                 }
             })
@@ -318,28 +225,42 @@
 </div>
 <div class="wrap">
     <div class="header">
-        <h2 onclick="window.location.href='/'">StoryBlog</h2>
+        <h2 onclick="window.location.href='/'" style="cursor:pointer;">StoryBlog</h2>
         <p>
             글 상세보기
         </p>
     </div>
     <div class="card" id="cards-box">
-                <!-- 제목, 작성자 영역 -->
-            <h5 class="card-header" th:id="${data2.getId()}+'-title2'" th:text="${data2.getTitle()}"></h5>
-            <div class="card-body">
-                <h10 th:id="${data2.getId()}+'-username'" class="card-title" th:text="${data2.getUsername()}"></h10>
-                <!-- contents 조회/수정 영역-->
-                <p class="card-text" th:id="${data2.getId()}+'-contents'" th:text="${data2.getContents()}"></p>
-                <textarea maxlength="1000" class="field card-body" name="contents" th:id="${data2.getId()}+'-textarea'" cols="30"
-                          rows="10"></textarea>
-                <!-- 날짜, 버튼 영역-->
-                <a th:id="${data2.getId()}+'-edit'" class="btn btn-primary btn-edit" th:attr="onclick=|editPost(${data2.getId()})|">수정하기</a>
-                <a th:id="${data2.getId()}+'-submit'" class="btn btn-primary btn-submit" th:attr="onclick=|submitEdit(${data2.getId()})|">수정완료</a>
-                <a th:id="${data2.getId()}+'-delete'" class="btn btn-primary btn-delete" th:attr="onclick=|deleteOne(${data2.getId()})|">삭제하기</a>
-                <footer class="blockquote-footer" th:text="${data2.getModifiedAt()}"></footer>
+        <!-- 제목, 작성자 영역 -->
+        <h5 class="card-header" th:id="${data2.getId()}+'-title2'" th:text="${data2.getTitle()}"></h5>
+        <div class="card-body">
+            <div th:id="${data2.getId()}+'-username'" class="card-title" th:text="${data2.getUsername()}"
+                 style="float: right"></div>
+            <!-- contents 조회/수정 영역-->
+            <p></p>
+            <div class="card-body" th:id="${data2.getId()}+'-contents'" th:text="${data2.getContents()}">
             </div>
+            <textarea maxlength="1000" class="field card-body" name="contents" th:id="${data2.getId()}+'-textarea'"
+                      cols="30"
+                      rows="10"></textarea>
+            <p></p>
+            <!-- 날짜, 버튼 영역-->
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" th:id="${data2.getId()}+'-edit'" class="btn btn-secondary"
+                        th:attr="onclick=|editPost(${data2.getId()})|">수정하기
+                </button>
+                <button type="button" th:id="${data2.getId()}+'-submit'" class="btn btn-secondary btn-submit"
+                        th:attr="onclick=|submitEdit(${data2.getId()})|">수정완료
+                </button>
+                <button type="button" th:id="${data2.getId()}+'-delete'" class="btn btn-secondary"
+                        th:attr="onclick=|deleteOne(${data2.getId()})|">삭제하기
+                </button>
+            </div>
+            <footer class="blockquote-footer" th:text="${data2.getModifiedAt()}"></footer>
+        </div>
     </div>
 </div>
 </body>
 </html>
+
 

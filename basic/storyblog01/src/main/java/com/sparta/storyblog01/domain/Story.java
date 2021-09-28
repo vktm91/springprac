@@ -22,12 +22,6 @@ public class Story extends TimeStamped{
     @Column(nullable = false)
     private String title;
 
-    public Story(String username, String contents) {
-        this.username = username;
-        this.contents = contents;
-        this.title = title;
-    }
-
     public Story(StoryRequestDto requestDto) {
         this.username = requestDto.getUsername();
         this.contents = requestDto.getContents();
