@@ -40,6 +40,10 @@ public class Product extends Timestamped{
         this.myprice = 0;   //설정을 안했다면 기본적으로 사용자 설정한 가격이 젤 작도록
     }
 
+    public void updateByItemDto(ItemDto itemDto) {
+        this.lprice = itemDto.getLprice();
+    }
+
     // 관심 가격 변경 시 이용합니다.
     public void update(ProductMypriceRequestDto requestDto) {
         this.myprice = requestDto.getMyprice();
