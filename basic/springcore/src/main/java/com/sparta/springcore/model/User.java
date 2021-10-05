@@ -15,27 +15,39 @@ public class User {
     // ID가 자동으로 생성 및 증가합니다.
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
-    private Long id;   //pk값
+    private Long id;
 
     // nullable: null 허용 여부
 // unique: 중복 허용 여부 (false 일때 중복 허용)
     @Column(nullable = false, unique = true)
     private String username;
 
-    @Column(nullable = false)   //unique 디폴트값은 false이므로 false는 안써줘도됨
+    @Column(nullable = false)
     private String password;
 
     @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
-    @Enumerated(value = EnumType.STRING)   //db에 저장될때는 Enum값이 아닌 string으로 저장하겠다는 의미
+    @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
+
+    @Column(unique = true)
+    private Long kakaoId;
 
     public User(String username, String password, String email, UserRoleEnum role) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.role = role;
+        this.kakaoId = null;
+    }
+
+    public User(String username, String password, String email, UserRoleEnum role, Long kakaoId) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+        this.kakaoId = kakaoId;
     }
 }
