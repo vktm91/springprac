@@ -1,4 +1,4 @@
-package com.sparta.storyblog01.domain;
+package com.sparta.storyblog01.dto;
 
 import lombok.Getter;
 

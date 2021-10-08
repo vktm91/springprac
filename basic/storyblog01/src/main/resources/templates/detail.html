@@ -134,6 +134,13 @@
             background-color: #8f829a;
         }
 
+        /*.btn-comment-submit {*/
+        /*    display: none;*/
+        /*}*/
+
+        /*.btn-comment-edit {*/
+        /*    display: none;*/
+        /*}*/
 
     </style>
     <script>
@@ -168,7 +175,7 @@
             $(`#${id}-edit`).hide();
         }
 
-        // 수정된 메모 제출
+        // 수정된 게시글 제출
         function submitEdit(id) {
             // 1. 작성 대상 메모의 username과 contents 를 확인합니다.
             let username = $(`#${id}-username`).text().trim();    //텍스트로 박혀있는 부분과
@@ -200,7 +207,7 @@
             });
         }
 
-        // 메모를 삭제합니다.
+        // 게시글 삭제
         function deleteOne(id) {
             $.ajax({
                 type: "DELETE",
@@ -212,6 +219,52 @@
             })
         }
 
+        // 댓글 생성
+        function writePost(id) {
+            // 1. 작성한 댓글을 불러옵니다.
+            let contents = $('#contents').val();
+            // 2. 작성한 메모가 올바른지 isValidContents 함수를 통해 확인합니다.
+            if (isValidContents(contents) == false) {
+                return;
+            }
+            let username = $('#name-box').text();
+
+            // 4. 전달할 data JSON으로 만듭니다.
+            let data = {'username': username, 'contents': contents};
+            // 5. POST /api/memos 에 data를 전달합니다.
+            $.ajax({
+                type: "POST",
+                url: `/api/storys/writtingcomment/${id}`,
+                contentType: "application/json", // JSON 형식으로 전달함을 알리기
+                data: JSON.stringify(data),   // .stringify: api는 원래 문자열로만 정보를 주고받을수있다. JSON을 string으로 변환해주는것.
+                success: function (response) {
+                    alert('댓글이 성공적으로 작성되었습니다.');
+                    window.location.reload();
+                }
+            });
+        }
+
+
+
+
+
+        ////댓글 삭제
+        function deleteComment(id, id2) {
+            $.ajax({
+                type: "DELETE",
+                url: `/api/storys/comments/${id}/${id2}`,
+                // contentType: "application/json",
+                // data: JSON.stringify(data),
+                success: function (response) {
+                    alert('삭제완료!');
+                    window.location.reload();
+                },
+                error: function (error) {
+                    alert('에러!');
+                    console.log(error)
+                }
+            })
+        }
     </script>
 
 
@@ -243,23 +296,83 @@
             <textarea maxlength="1000" class="field card-body" name="contents" th:id="${data2.getId()}+'-textarea'"
                       cols="30"
                       rows="10"></textarea>
-            <p></p>
+<!--            <p th:text="${dataUser.getUsername()}"></p>-->
             <!-- 날짜, 버튼 영역-->
             <div class="btn-group" role="group" aria-label="Basic example">
-                <button type="button" th:id="${data2.getId()}+'-edit'" class="btn btn-secondary"
+
+                <button th:if="${dataUser.getUsername().equals(data2.getUserId())} or ${admin_role.equals(true)}" type="button" th:id="${data2.getId()}+'-edit'" class="btn btn-secondary"
                         th:attr="onclick=|editPost(${data2.getId()})|">수정하기
                 </button>
                 <button type="button" th:id="${data2.getId()}+'-submit'" class="btn btn-secondary btn-submit"
                         th:attr="onclick=|submitEdit(${data2.getId()})|">수정완료
                 </button>
-                <button type="button" th:id="${data2.getId()}+'-delete'" class="btn btn-secondary"
+                <button th:if="${dataUser.getUsername().equals(data2.getUserId())} or ${admin_role.equals(true)}" type="button" th:id="${data2.getId()}+'-delete'" class="btn btn-secondary"
                         th:attr="onclick=|deleteOne(${data2.getId()})|">삭제하기
                 </button>
             </div>
             <footer class="blockquote-footer" th:text="${data2.getModifiedAt()}"></footer>
         </div>
     </div>
+
+
+    <div class="card" id="comments-box">
+        <div class="card-body">
+<!--            댓글 작성칸-->
+            <input type="text" maxlength="30" class="form-control btn-comment-write" id="contents" placeholder="댓글을 작성해주세요" aria-label="Username" aria-describedby="basic-addon1">
+<!--            댓글 수정칸-->
+<!--            <input type="text" maxlength="100" class="form-control btn-comment-edit" id="edit-content" aria-label="Username" aria-describedby="basic-addon1">-->
+<!--            등록하기 버튼-->
+            <div style = "padding: 0 0 6px 0;"></div>
+            <a class="btn btn-secondary btn-sm" th:attr="onclick=|writePost(${data2.getId()})|"
+               style="float: right">등록하기</a>
+            <div style = "padding: 60px 0 4px 0;"></div>
+<!--            댓글 목록-->
+
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="comment : ${data2.getCommentList()}">
+                    <td th:text="${comment.getIdx()}">idx</td>
+                    <td th:text="${comment.getUsername()}" th:id="${comment.getUsername()}+'-comments-username'">username</td>
+                    <td th:text="${comment.getContents()}" th:id="${comment.getContents()}+'-comments-box'">contents</td>
+                    <td th:text="${#temporals.format(comment.getModifiedAt(), 'MM/dd HH:mm')}" style="font-size: 6px"></td>
+                    <td>
+                        <div class="btn-group" role="group" aria-label="Basic example">
+<!--                        <button th:if="${dataUser.getUsername().equals(comment.getUsername())} or ${admin_role.equals(true)}"-->
+<!--                                th:attr="onclick=|editComment(${comment.getIdx()}, ${data2.getId()}|" type="button" class="btn btn-secondary btn-sm btn-comment-edit"-->
+<!--                                th:id="${comment.getIdx()}+'-commnet-edit-button'">-->
+<!--                            수정-->
+<!--                        </button>-->
+<!--                        <button th:if="${dataUser.getUsername().equals(comment.getUsername())} or ${admin_role.equals(true)}"-->
+<!--                                th:attr="onclick=|editComment(${comment.getIdx()}, ${data2.getId()}|" type="button" class="btn btn-secondary btn-sm btn-comment-submit"-->
+<!--                                th:id="${comment.getIdx()}+'-commnet-edit-button'">-->
+<!--                            완료-->
+<!--                        </button>-->
+                        <button th:if="${dataUser.getUsername().equals(comment.getUsername())} or ${admin_role.equals(true)}"
+                                th:attr="onclick=|deleteComment(${comment.getIdx()}, ${data2.getId()})|" type="button" class="btn btn-secondary btn-sm"
+                                th:id="${comment.getIdx()}+'-commnet-delete-button'">
+                            삭제
+                        </button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
 </div>
+<div th:if="${admin_role}" id="admin"></div>
+
 </body>
 </html>
 
