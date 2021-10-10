@@ -142,6 +142,10 @@
         /*    display: none;*/
         /*}*/
 
+        .hidden-name-box {
+            display: none;
+        }
+
     </style>
     <script>
 
@@ -316,6 +320,8 @@
 
 
     <div class="card" id="comments-box">
+        <div id="name-box" class="hidden-name-box" th:text="${dataUser.getUsername()}"></div>
+
         <div class="card-body">
 <!--            댓글 작성칸-->
             <input type="text" maxlength="30" class="form-control btn-comment-write" id="contents" placeholder="댓글을 작성해주세요" aria-label="Username" aria-describedby="basic-addon1">
@@ -341,9 +347,9 @@
                 </thead>
                 <tbody>
                 <tr th:each="comment : ${data2.getCommentList()}">
-                    <td th:text="${comment.getIdx()}">idx</td>
-                    <td th:text="${comment.getUsername()}" th:id="${comment.getUsername()}+'-comments-username'">username</td>
-                    <td th:text="${comment.getContents()}" th:id="${comment.getContents()}+'-comments-box'">contents</td>
+                    <td th:text="${comment.getIdx()}" style="font-size: 6px">idx</td>
+                    <td th:text="${comment.getUsername()}" th:id="${comment.getUsername()}+'-comments-username'" style="font-size: 13px">username</td>
+                    <td th:text="${comment.getContents()}" th:id="${comment.getContents()}+'-comments-box'" style="width: 350px;">contents</td>
                     <td th:text="${#temporals.format(comment.getModifiedAt(), 'MM/dd HH:mm')}" style="font-size: 6px"></td>
                     <td>
                         <div class="btn-group" role="group" aria-label="Basic example">

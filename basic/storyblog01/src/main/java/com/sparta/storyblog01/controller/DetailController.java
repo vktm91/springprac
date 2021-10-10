@@ -29,7 +29,7 @@ public class DetailController {
 
 
         // 로그인 유저 정보
-        if (authentication.isAuthenticated()) {
+        if (authentication != null) {
             UserDetails detailUser = (UserDetails) authentication.getPrincipal();
             model.addAttribute("dataUser", detailUser);
 

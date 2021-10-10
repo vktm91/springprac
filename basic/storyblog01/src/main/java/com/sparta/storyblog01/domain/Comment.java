@@ -26,8 +26,6 @@ public class Comment extends TimeStamped{
     private String deletecomment;
 
 
-
-
 //    @ManyToOne
 //    @JoinColumn(name = "storyId", nullable = false)
 //    private Story id;

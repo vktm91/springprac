@@ -55,14 +55,14 @@
         function addHTML(id, username, contents, modifiedAt, title) {
 
             let tempHtml = `<tr>
-                            <th scope="row">${id}</th>
-                            <td><div id="${id}-username" class="username">
+                            <th scope="row" style="width: 60px font-size: 13px;">${id}</th>
+                            <td><div id="${id}-username" class="username" style="width: 100px;">
                                  ${username}</div>
                             </td>
-                            <td onclick="window.location.href='/api/storys/details/${id}'" style="cursor:pointer;"><div id="${id}-contents" class="text">
+                            <td onclick="window.location.href='/api/storys/details/${id}'" style="cursor:pointer; width: 350px;""><div id="${id}-contents" class="text">
                                  ${title}</div>
                             </td>
-                            <td><div class="date">
+                            <td><div class="date" style="font-size: 13px; width: 100px;">
                                  ${modifiedAt}</div>
                             </td>
                             </tr>`
