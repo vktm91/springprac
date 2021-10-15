@@ -34,18 +34,20 @@ public class ProductService {
     }
 
     public Product updateProduct(Long id, ProductMypriceRequestDto requestDto) {
+        int myprice = requestDto.getMyprice();
+        if (myprice < MIN_MY_PRICE) {
+            throw new IllegalArgumentException("유효하지 않은 관심 가격입니다. 최소 " + MIN_MY_PRICE + " 원 이상으로 설정해 주세요.");
+        }
+
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new NullPointerException("해당 아이디가 존재하지 않습니다."));
 
-        int myprice = requestDto.getMyprice();
         product.setMyprice(myprice);
         productRepository.save(product);
 
         return product;
     }
 
-    // 회원 ID 로 등록된 상품 조회
-    // repostiory에서 List를 Page로 바꿔줬으니 여기도 바꿔준다
     public Page<Product> getProducts(Long userId, int page, int size, String sortBy, boolean isAsc) {
         Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
         Sort sort = Sort.by(direction, sortBy);
