@@ -17,7 +17,7 @@ public class CommentService {
     private final StoryRepository storyRepository;
     private final CommentRepository commentRepository;
 
-    @Transactional
+    @Transactional   //saveall이 아니고 save까지만해도 commit시켜줌, save하다가 문제생길시 rollback시켜줌
     public Comment create(CommentRequestDto requestDto, Long storyId) {
         Comment comment = new Comment(requestDto);
         Story story = storyRepository.findById(storyId).orElseThrow(
