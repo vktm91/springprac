@@ -1,6 +1,6 @@
 package com.example.javaprac.practice;
 
-public class method {
+public class Method {
     public static void main(String[] args) {
         //주사위 랜덤값
         int x = rollDie();

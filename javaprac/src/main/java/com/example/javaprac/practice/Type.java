@@ -1,6 +1,6 @@
 package com.example.javaprac.practice;
 
-public class type {
+public class Type {
     public static void main(String[] args) {
         // 캐스팅 1
         double pi = 3.14;
