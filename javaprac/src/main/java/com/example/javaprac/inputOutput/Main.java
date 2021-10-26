@@ -26,6 +26,25 @@ public class Main {
         int b = scanner.nextInt();
         scanner.close();
         System.out.println(a + b);
+
+        Scanner scanner1 = new Scanner(System.in);
+        int c = scanner.nextInt();
+        int d = scanner.nextInt();
+        scanner.close();
+        System.out.println(c - d);
+
+        Scanner scanner2 = new Scanner(System.in);
+        int e = scanner.nextInt();
+        int f = scanner.nextInt();
+        scanner.close();
+        System.out.println(e * f);
+
+        Scanner scanner3 = new Scanner(System.in);
+        int g = scanner.nextInt();
+        int h = scanner.nextInt();
+        scanner.close();
+        System.out.println(g / h);
+
     }
 
 }
