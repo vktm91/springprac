@@ -28,22 +28,33 @@ public class Main {
         System.out.println(a + b);
 
         Scanner scanner1 = new Scanner(System.in);
-        int c = scanner.nextInt();
-        int d = scanner.nextInt();
-        scanner.close();
-        System.out.println(c - d);
+        int c = scanner1.nextInt();
+        int d = scanner1.nextInt();
+        scanner1.close();
+        if(c > 0 && d < 10) {
+        System.out.println(c - d);}
 
         Scanner scanner2 = new Scanner(System.in);
-        int e = scanner.nextInt();
-        int f = scanner.nextInt();
-        scanner.close();
+        int e = scanner2.nextInt();
+        int f = scanner2.nextInt();
+        scanner2.close();
         System.out.println(e * f);
 
         Scanner scanner3 = new Scanner(System.in);
-        int g = scanner.nextInt();
-        int h = scanner.nextInt();
-        scanner.close();
+        double g = scanner3.nextDouble();
+        double h = scanner3.nextDouble();
+        scanner3.close();
         System.out.println(g / h);
+
+        Scanner scanner4 = new Scanner(System.in);
+        int i = scanner4.nextInt();
+        int j = scanner4.nextInt();
+        scanner4.close();
+        System.out.println(i + j);
+        System.out.println(i - j);
+        System.out.println(i * j);
+        System.out.println(i / j);
+        System.out.println(i % j);
 
     }
 
