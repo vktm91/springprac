@@ -56,6 +56,25 @@ public class Main {
         System.out.println(i / j);
         System.out.println(i % j);
 
+        Scanner scanner5 = new Scanner(System.in);
+        int A = scanner5.nextInt();
+        int B = scanner5.nextInt();
+        int C = scanner5.nextInt();
+        scanner5.close();
+        System.out.println( (A + B) % C);
+        System.out.println( (A % C + B % C) % C);
+        System.out.println( (A * B) % C);
+        System.out.println( (A % C * B % C ) % C);
+
+        Scanner scanner6 = new Scanner(System.in);
+        int A2 = scanner6.nextInt();
+        int B2 = scanner6.nextInt();
+        scanner6.close();
+        System.out.println(A2 * (B2 % 10));
+        System.out.println(A2 * (B2 % 100 / 10));
+        System.out.println(A2 * (B2 / 100));
+        System.out.println(A2 * B2);
+
     }
 
 }
