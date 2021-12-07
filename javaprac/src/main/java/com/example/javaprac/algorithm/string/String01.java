@@ -19,7 +19,7 @@ class String01 {
     String01 T = new String01();
     Scanner kb = new Scanner(System.in);
     String str = kb.next();
-    char c = kb.next().charAt(0);  //charAt: 스트링을 인덱스로 접근
+    char c = kb.next().charAt(0);  //charAt: 문자열을 한 글자씩 char타입 배열에 집어넣어준다
     System.out.println(T.solution(str, c));
   }
 }
