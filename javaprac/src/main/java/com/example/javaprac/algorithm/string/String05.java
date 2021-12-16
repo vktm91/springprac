@@ -2,7 +2,7 @@ package com.example.javaprac.algorithm.string;
 
 import java.util.Scanner;
 
-public class Main05 {
+public class String05 {
 
   public String solution(String str) {
     String answer;
@@ -27,7 +27,7 @@ public class Main05 {
   }
 
   public static void main(String[] args) {
-    Main05 T = new Main05();
+    String05 T = new String05();
     Scanner kb = new Scanner(System.in);
     String str = kb.next();
     System.out.println(T.solution(str));

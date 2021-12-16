@@ -2,7 +2,7 @@ package com.example.javaprac.algorithm.string;
 
 import java.util.Scanner;
 
-class Main03 {
+class String03 {
 
   public String solution(String str) {
     String answer = "";
@@ -19,7 +19,7 @@ class Main03 {
   }
 
   public static void main(String[] args) {
-    Main03 T = new Main03();
+    String03 T = new String03();
     Scanner kb = new Scanner(System.in);
     String str = kb.nextLine();  //next()는 공백기준 입력, nextLine()은 한 라인기준 입력
     System.out.println(T.solution(str));

@@ -2,7 +2,7 @@ package com.example.javaprac.algorithm.string;
 
 import java.util.Scanner;
 
-class Main01 {
+class String01 {
 
   public int solution(String str, char t) {
     int answer = 0;
@@ -16,7 +16,7 @@ class Main01 {
   }
 
   public static void main(String[] args) {
-    Main01 T = new Main01();
+    String01 T = new String01();
     Scanner kb = new Scanner(System.in);
     String str = kb.next();
     char c = kb.next().charAt(0);  //charAt(0): 0번째에 있는 문자를 char타입으로 변환

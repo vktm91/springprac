@@ -3,7 +3,7 @@ package com.example.javaprac.algorithm.string;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Main04 {
+public class String04 {
 
   public ArrayList<String> solution(int n, String[] str) {
     ArrayList<String> answer = new ArrayList<>();
@@ -33,7 +33,7 @@ public class Main04 {
   }
 
   public static void main(String[] args) {
-    Main04 T = new Main04();
+    String04 T = new String04();
     Scanner kb = new Scanner(System.in);
 
     int n = kb.nextInt();
